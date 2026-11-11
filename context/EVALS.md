@@ -3,6 +3,81 @@
 The verification table from HW3, grown up. Five sections, in this order.
 The first two are written and committed BEFORE any tool sees the spec.
 
+## 0. Final project: RAT and Prediction Stake
+
+**Committed 2026-11-11, before any build.** There is no product code in this
+repository at the time of this commit, which `git log` shows. Sections 1 to 5
+below are HW5's and are kept as the record of that phase; they are not this
+project's RAT.
+
+### 0.1 Riskiest assumption
+
+**The assumption.** A parent deciding whether to pay for a camp or a showcase
+will decide differently once they can see a record of which coaches have shown
+interest and at what level.
+
+**Why this one and not another.** `PROJECT.md` lands on a sharpened framing:
+the block is not that families fail to understand value in the abstract, it is
+that **they cannot get evidence of interest before they spend**. Every Must-be
+row in `FEATURES.md` is built on that sentence. If seeing the evidence does not
+move the spending decision, then this product is a tidier record of the same
+ambiguity, and the thing standing between an interested athlete and a paying
+client was never information.
+
+It is riskier than it sounds because the interviews in `USERS.md` asked what
+people *wanted*, not what would change what they *did*. My mother asked for an
+honest level assessment. Wanting one and acting on one are different claims and
+only the first has evidence behind it.
+
+**Test.** Three real users by 2026-11-19, as the brief requires: athletes in the
+recruiting process or the parent paying for it. Order matters, because asking
+after showing the tool invites a polite answer.
+
+1. Before showing anything, ask: *"There is a camp this spring, $400. How would
+   you decide whether to pay for it?"* Record the answer verbatim.
+2. Show them the record for their own situation.
+3. Ask the same question again, then the disappointment question from
+   `docs/FEEDBACK.md`.
+
+**Pass.** At least **2 of 3** give a second answer that differs from their first
+*and* name something they saw in the tool as the reason. A different answer with
+a reason that does not refer to the tool is not a pass; neither is the same
+answer stated more confidently.
+
+**Fail.** 0 or 1 of 3. That means the evidence does not move the decision, and
+the next thing to build is not more record-keeping. It would mean the product
+has to make an argument, not just a display, and that is a different build.
+
+**Limits, stated now rather than after.** My first users are likely to be my own
+sister and mother, who are in `USERS.md` and consented to the interviews there.
+They are real users with the real problem and they are also related to me, which
+makes a polite answer more likely, not less. If the result is a pass, that limit
+goes in the verdict next to it.
+
+### 0.2 Prediction Stake (before the first build)
+
+**Tight, a count.** **At most 1 of the 3 will change their answer.** I predict 2
+or more will give substantially the same answer the second time and describe the
+tool as confirming what they already suspected.
+
+**Loose, a direction with a reason.** **The level assessment will matter more to
+them than the coach-interest record**, even though the interest record is the
+harder thing to build and the thing my framing is about. My mother asked for the
+level assessment by name and nobody asked for a contact log. If that is right,
+the Must-be ordering in `FEATURES.md` is wrong and row 2 should come before
+row 1.
+
+**Open, a question I cannot predict.** When a parent sees a record showing *few*
+coaches interested, does that stop the spending or increase it? Both are
+plausible and they point at opposite products. If it increases spending, this
+tool has a consequence I have not designed for and should say so before it
+reaches anyone outside my family.
+
+**Resolution:** written beneath each prediction after the sessions, with the
+date. The predictions are not edited.
+
+---
+
 ## 1. RAT statement
 
 **Written before bolt.new saw anything. 2026-09-29 17:36 EDT.**
