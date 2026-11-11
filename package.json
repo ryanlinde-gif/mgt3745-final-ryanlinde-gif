@@ -4,6 +4,11 @@
   "type": "module",
   "scripts": {
     "test": "node --test \"evals/**/*.test.js\"",
-    "test:proxy": "node --test \"worker/test/*.test.js\""
+    "test:proxy": "node --test \"worker/test/*.test.js\"",
+    "deploy": "wrangler deploy --config worker/wrangler.toml",
+    "dev": "wrangler dev --config worker/wrangler.toml"
+  },
+  "devDependencies": {
+    "wrangler": "4.160.1"
   }
 }

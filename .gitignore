@@ -2,3 +2,7 @@ node_modules/
 .wrangler/
 .dev.vars
 .DS_Store
+
+# Exit-test artifacts, never committed
+backup.sql
+*-backup.sql

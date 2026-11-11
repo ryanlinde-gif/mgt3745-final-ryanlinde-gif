@@ -1,24 +1,37 @@
 # TOOLS.md
 
-The ledger of Trust Boundary crossings. One row per external service this
-repository actually depends on. Read by the agent on every task, so it stays
-short: a service not in use does not belong here.
+The ledger of Trust Boundary crossings, one row per dependency this repository
+actually depends on. Rings, limits and exits come from
+[docs/SOURCING-AUDIT.md](../docs/SOURCING-AUDIT.md), Audit 1, 2026-11-11.
 
-No credential appears in this file or anywhere in this repository. The
-`database_id` in `wrangler.toml` is an address, not a key.
+**No credential appears in this file or anywhere in this repository.** The
+`database_id` in `wrangler.toml` is an address, not a key, and
+`evals/supply-chain.test.js` fails if that stops being true.
 
-| Service | Trusted with | Credentials live | Crossing statement | Switching cost |
-|---|---|---|---|---|
-| **Cloudflare Workers + D1** | Every contact a user types: coach name, school, date, status. Plus request metadata Cloudflare logs whether I asked for it or not: IP address, timestamp, user agent | Cloudflare account login; an OAuth token wrangler wrote to `~/Library/Preferences/.wrangler` on my laptop | "Entries my sister types leave her browser and are stored in Cloudflare's D1 in region ENAM, which Cloudflare chose and I did not, under free-tier terms I accepted by signing up and have not read in full. If that data is exposed, the person answering for it is me, not Cloudflare." | **Medium.** `wrangler d1 export` gets the rows out; the Worker would have to be rewritten for another host |
-| **GitHub + Codespaces** | Source, full commit history, and the contents of `USERS.md`, which quotes interviews with my mother and my sister and names her graduating class. The repository is public | GitHub account login (browser session and GitHub Desktop) | "I put research about two real people, one of them a minor, into a public repository so a grader could read it. GitHub hosts it, anyone can read it, search engines can index it, and I am the one who chose to publish it. I reviewed this on 2026-09-22 and chose to leave it, because both people are my immediate family, they consented to the recorded interviews, and the repository has been public since HW2. It is a decision, not an oversight, which is the only part of it I control." | **Low.** Push the same history to another host |
-| **GitHub Copilot** | Whatever is open in the editor and enough of the repository to answer. When I asked it for the SQL insert, `worker.js` was open and its reply cited `schema.sql`, so it had read at least both | GitHub account; no separate credential | "The contents of my repository cross to GitHub's model as prompt material every time I ask Copilot a question, and since the repository is already public that adds no new exposure, but it would if this repository ever went private and I forgot this row existed." | **Low.** Stop asking it |
-| **bolt.new** | The five context files and all three page files, 58 KB in one paste: the Connexus business framing, the specification, and the deployed Worker URL in plain text. No athlete data, because the data lives in D1 and only its address crossed | GitHub account (sign-in via OAuth); no separate credential | "I pasted my whole specification and the address of an endpoint that has no authentication into a third party's chat box so it would write one feature for me, and it returned nineteen dependencies and a hidden instruction file I did not ask for. Anything that can read that paste can read every entry in my database. I am accountable." | **Low.** Nothing of bolt's was kept. The three files were integrated by hand and the scaffold discarded |
-| **Google AI Studio** | The same 58 KB paste, for the comparison note only. Nothing of its output was integrated | Google account | "I gave the same specification and the same Worker URL to a second vendor to find out whether my spec was clear or just lucky. The answer was worth having; the second copy of my data on a second company's servers is the price I paid for it." | **Low.** Used once, nothing retained |
-| **wrangler (npm)** | No user data. It holds the Cloudflare OAuth token described above, and it ran install scripts on my laptop with my own permissions when I ran `npm install` | The token it wrote to `~/Library/Preferences/.wrangler` | "I installed a package I have never read, it ran code on my laptop during install, and I then handed it a token that can deploy Workers and write to my database. I trusted the maintainers on the strength of the name on the package, and if that package changed hands tomorrow I would not notice." | **High in practice.** It is the only supported way to deploy a Cloudflare Worker; leaving means leaving Cloudflare |
+| Tool | Purpose | Ring | Checked on | Limit or price | Exit |
+|---|---|---|---|---|---|
+| **Node.js + `node:test`** | Runs every eval | Adopt | 2026-11-11 | Free, built in | None needed. Nothing to leave |
+| **Claude (Claude Code)** | Drafting under review. Never decides | Adopt | 2026-11-11 | Subscription | Stop using it. Every use is under a DDR |
+| **Cloudflare D1** | Holds every entry a user types | Adopt | 2026-11-11 | 5,000,000 rows read/day; 100,000 written/day; 500 MB/database; 10 databases | `wrangler d1 export` to plain SQL. **Tested 2026-11-11**, 1,096 bytes with schema |
+| **GitHub + Pages** | Hosts the repository and serves the page | Adopt | 2026-11-11 | Free for public repositories | Push the history to GitLab or Codeberg; serve from Cloudflare Pages. 1 to 2 hours |
+| **GitHub Codespaces** | Development environment | Adopt | 2026-11-11 | Free monthly core-hours, can run out mid-month | Develop locally. Costs an afternoon |
+| **Cloudflare Workers** | Serves every request | Adopt | 2026-11-11 | 100,000 requests/day; 10 ms CPU per invocation; 64 MiB | Rewrite as a small Node server. 8 to 12 hours |
+| **Google AI Studio** | One comparison run in HW6. Nothing retained | Assess | 2026-11-11 | Free tier quota | Nothing depends on it |
+| **GitHub Copilot** | Editor suggestions | Trial | 2026-11-11 | Free on the student licence, **which ends at graduation** | Claude, already in use |
+| **wrangler** | The only supported way to deploy a Worker | Adopt | 2026-11-11 | Free. **Pinned to 4.160.1** | **High in practice.** Leaving wrangler means leaving Cloudflare |
+| **esbuild + workerd** | Arrive with wrangler, not chosen | Assess | 2026-11-11 | Free | None separately. **Both run `postinstall` scripts on my machine** |
+| **bolt.new** | Used in HW5 and HW6. Nothing kept | Hold | 2026-11-11 | Token allowance | Already out. Nothing of its output ships |
+
+**What crosses, stated plainly.** Entries a user types leave the browser and are
+stored in Cloudflare's D1 under free-tier terms, in a region Cloudflare chose. If
+that data is exposed, the person answering for it is me. The users are high
+school athletes, some of them minors, which is why exit cost carries a weight of
+30 in the audit.
 
 ## Revisit triggers
 
 - A new service is added to the repository.
 - A vendor changes pricing, terms, or region.
 - A credential moves.
+- **`wrangler` is upgraded off 4.160.1**, which is now a decision rather than an install.
 - This repository stops being public, which changes the Copilot row.
